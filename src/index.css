@@ -1,0 +1,107 @@
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Raleway:wght@400;500;700&family=Mozilla+Headline:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bungee+Spice&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Prata&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+:root {
+  --bg-color: #dededee6;
+  --text-color: #331d2c;
+}
+
+[data-theme="dark"] {
+  --bg-color: #45454525;
+  --text-color: #ffffff;
+}
+
+body {
+  /* background-color: var(--bg-color); */
+  min-height: 100vh;
+  width: 100%;
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+[data-theme="light"] body::before {
+  --size: 45px;
+  --line: color-mix(in hsl, canvasText, transparent 10%);
+  content: "";
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  background: linear-gradient(
+        90deg,
+        var(--line) 1px,
+        transparent 1px var(--size)
+      )
+      80% 80% / var(--size) var(--size),
+    linear-gradient(var(--line) 1px, transparent 1px var(--size)) 80% 80% /
+      var(--size) var(--size);
+  mask: linear-gradient(-20deg, transparent 40%, white);
+  top: 0;
+  transform-style: flat;
+  pointer-events: none;
+  z-index: -1;
+}
+
+[data-theme="dark"] body::before {
+  --size: 45px;
+  content: "";
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  background: linear-gradient(90deg, #70838588 1px, transparent 1px) 0 0 /
+      var(--size) var(--size),
+    linear-gradient(rgba(75, 221, 221, 0.15) 1px, transparent 1px) 0 0 /
+      var(--size) var(--size);
+  top: 0;
+  left: 0;
+  mask: linear-gradient(-20deg, transparent 40%, white);
+  z-index: -1;
+  pointer-events: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  color: #f59e0b;
+  font-family: "Play", sans-serif;
+}
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-slow-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+.stroke-text {
+  -webkit-text-stroke: 1px var(--text-color); /* outline thickness and color */
+  color: transparent;
+}
+.animate-spin-slow {
+  animation: spin-slow 30s linear infinite;
+}
+.animate-spin-slow-reverse {
+  animation: spin-slow-reverse 40s linear infinite;
+}
+
+ 

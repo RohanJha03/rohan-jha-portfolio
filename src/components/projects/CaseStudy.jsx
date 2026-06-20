@@ -1,0 +1,513 @@
+import React, { useContext, useEffect, useState } from "react";
+import { AppContext } from "../../context/datacontext";
+import { Link, useParams } from "react-router-dom";
+import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import CategoryIcon from "@mui/icons-material/Category";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import FlagCircleIcon from "@mui/icons-material/FlagCircle";
+import PersonIcon from "@mui/icons-material/Person";
+import LoopIcon from "@mui/icons-material/Loop";
+import StarIcon from "@mui/icons-material/Star";
+import MemoryIcon from "@mui/icons-material/Memory";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import Masonry from "./Masonary";
+import { useLenis } from "../SmoothScroll";
+import BlurText from "../BlurText";
+import SplitText from "../SplitText";
+import CodeIcon from "@mui/icons-material/Code";
+
+const processSteps = {
+  "pharmacy-management": [
+    {
+      phase: "01",
+      title: "Planning & Requirements",
+      desc: "Defined core features including medicine stock alerts, POS invoicing, purchase logs, and supplier tracking.",
+      color: "from-cyan-500 to-blue-500",
+      imageUrl: "https://img.icons8.com/color/96/rules.png",
+    },
+    {
+      phase: "02",
+      title: "System Design",
+      desc: "Architected normalized MongoDB collections, designed Redux state management, and mapped express routing structures.",
+      color: "from-purple-500 to-indigo-500",
+      imageUrl: "https://img.icons8.com/color/96/prototype.png",
+    },
+    {
+      phase: "03",
+      title: "Implementation",
+      desc: "Developed secure RESTful backend routes in Express and interactive frontend layouts in React with Tailwind CSS.",
+      color: "from-amber-500 to-orange-500",
+      imageUrl: "https://img.icons8.com/color/96/react-native.png",
+    },
+    {
+      phase: "04",
+      title: "Testing & QA",
+      desc: "Tested secure token-based login routing, POS calculations, stock updates, and integration of core APIs.",
+      color: "from-teal-500 to-emerald-500",
+      imageUrl: "https://img.icons8.com/color/96/test-passed.png",
+    },
+    {
+      phase: "05",
+      title: "Deployment & Ops",
+      desc: "Deployed the backend and frontend to Render, configured environment variables and integrated MongoDB Atlas databases.",
+      color: "from-pink-500 to-rose-500",
+      imageUrl: "https://img.icons8.com/color/96/cloud.png",
+    },
+  ],
+  "wanderlust": [
+    {
+      phase: "01",
+      title: "Planning & Requirements",
+      desc: "Defined core features including travel listings, map search, user reviews, and secure session management.",
+      color: "from-cyan-500 to-blue-500",
+      imageUrl: "https://img.icons8.com/color/96/rules.png",
+    },
+    {
+      phase: "02",
+      title: "System Design",
+      desc: "Modeled NoSQL Mongoose schemas, designed Express MVC routing, and wireframed responsive EJS interface layouts.",
+      color: "from-purple-500 to-indigo-500",
+      imageUrl: "https://img.icons8.com/color/96/prototype.png",
+    },
+    {
+      phase: "03",
+      title: "Implementation",
+      desc: "Programmed backend Express controllers, integrated listings CRUD routes, and implemented secure sessions with Node.js.",
+      color: "from-amber-500 to-orange-500",
+      imageUrl: "https://img.icons8.com/color/96/nodejs.png",
+    },
+    {
+      phase: "04",
+      title: "Testing & QA",
+      desc: "Conducted functional validation of form submissions, verified responsive UI rendering, and tested middleware.",
+      color: "from-teal-500 to-emerald-500",
+      imageUrl: "https://img.icons8.com/color/96/test-passed.png",
+    },
+    {
+      phase: "05",
+      title: "Deployment & Ops",
+      desc: "Deployed the web application to cloud hosting, connected a Atlas MongoDB cluster, and managed scaling configurations.",
+      color: "from-pink-500 to-rose-500",
+      imageUrl: "https://img.icons8.com/color/96/cloud.png",
+    },
+  ],
+};
+
+const CaseStudy = () => {
+  const { projects } = useContext(AppContext);
+  const [projectData, setProjectData] = useState(null);
+  const { slug } = useParams();
+  const { darkMode } = useContext(AppContext);
+  useEffect(() => {
+    if (projects && projects.length > 0) {
+      const data = projects.find((item) => item.slug === slug);
+      setProjectData(data || null);
+    }
+  }, [slug, projects]);
+
+  const items =
+    projectData?.visualgallery?.screenShots?.map((img, index) => ({
+      id: index + 1,
+      img: img?.image,
+    })) || [];
+  const lenisRef = useLenis();
+  useEffect(() => {
+    lenisRef?.current?.scrollTo(0); // top of the page
+  }, []);
+  return (
+    <>
+      <title>
+        Rohan Jha's Projects Case Studies | Web Development Portfolio
+      </title>
+      <meta
+        name="description"
+        content="Detailed projects case studies by Rohan Jha, showcasing full-stack development skills using Java, Node.js, React, Express, MySQL, MongoDB, and Git. Explore challenges, solutions, and results."
+      />
+      <meta
+        name="keywords"
+        content="Rohan Jha, Projects Case Studies, Web Development, Portfolio, Java, React JS, Tailwind CSS, JavaScript, Node.js, Express, MongoDB, MySQL, UI/UX, Responsive Design, Project Showcase"
+      />
+      {/* Open Graph */}
+      <meta
+        property="og:title"
+        content="Rohan Jha's Projects Case Studies | Web Development Portfolio"
+      />
+      <meta
+        property="og:description"
+        content="Explore Rohan Jha’s web projects through detailed case studies, highlighting backend architectures, database designs, and modern full-stack practices."
+      />
+      <meta property="og:type" content="website" />
+      <meta
+        property="og:url"
+        content="https://yourportfolio.com/projects-case-studies"
+      />
+      <meta
+        property="og:image"
+        content="https://yourportfolio.com/projects-case-studies-preview.png"
+      />
+      <div className="flex flex-col items-center justify-center py-40 overflow-hidden">
+        <div className="xl:w-3/5 md:w-4/5 w-11/12 h-auto">
+          <div>
+            <h1 className="lg:text-4xl md:text-3xl text-2xl font-bold">
+              <BlurText
+                text={projectData?.header?.title}
+                delay={15}
+                animateBy="words"
+                direction="bottom"
+              />
+            </h1>
+            <div className="flex flex-row sm:flex-nowrap flex-wrap gap-4 mt-6">
+              <Link
+                to={projectData?.navigation?.demo}
+                rel="noopener noreferrer"
+                target="_blank"
+                className={`bg-black font-para  text-white  z-[3] px-4 py-3  flex justify-center items-center gap-2 font-medium rounded-[10px] opacity-100 hover:opacity-60 transition-all hover:duration-200 ${
+                  !darkMode
+                    ? "  shadow-[rgba(61,61,61,0.72)_0px_0.602187px_1.08394px_-1.25px,rgba(61,61,61,0.64)_0px_2.28853px_4.11936px_-2.5px,rgba(61,61,61,0.25)_0px_10px_18px_-3.75px,rgba(0,0,0,0.35)_0px_0.706592px_0.706592px_-0.583333px,rgba(0,0,0,0.34)_0px_1.80656px_1.80656px_-1.16667px,rgba(0,0,0,0.33)_0px_3.62176px_3.62176px_-1.75px,rgba(0,0,0,0.3)_0px_6.8656px_6.8656px_-2.33333px,rgba(0,0,0,0.26)_0px_13.6468px_13.6468px_-2.91667px,rgba(0,0,0,0.15)_0px_30px_30px_-3.5px]"
+                    : " shadow-[0_0_8px_rgba(0,255,255,0.6)]"
+                }`}
+              >
+                <ArrowOutwardIcon /> <span>Live</span>
+              </Link>
+              {projectData?.category === "Professional" ? (
+                <div
+                  className={`bg-black font-para  ${
+                    projectData?.category === "Professional"
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
+                  } text-white  flex justify-center items-center gap-2 z-[3] px-4 py-3 font-medium rounded-[10px] opacity-100 ${
+                    !darkMode
+                      ? "  shadow-[rgba(61,61,61,0.72)_0px_0.602187px_1.08394px_-1.25px,rgba(61,61,61,0.64)_0px_2.28853px_4.11936px_-2.5px,rgba(61,61,61,0.25)_0px_10px_18px_-3.75px,rgba(0,0,0,0.35)_0px_0.706592px_0.706592px_-0.583333px,rgba(0,0,0,0.34)_0px_1.80656px_1.80656px_-1.16667px,rgba(0,0,0,0.33)_0px_3.62176px_3.62176px_-1.75px,rgba(0,0,0,0.3)_0px_6.8656px_6.8656px_-2.33333px,rgba(0,0,0,0.26)_0px_13.6468px_13.6468px_-2.91667px,rgba(0,0,0,0.15)_0px_30px_30px_-3.5px]"
+                      : " shadow-[0_0_8px_rgba(0,255,255,0.6)]"
+                  }`}
+                >
+                  <button
+                    disabled
+                    className="flex flex-row cursor-not-allowed gap-2"
+                  >
+                    {" "}
+                    <GitHubIcon /> <span>Repo</span>
+                  </button>
+                </div>
+              ) : (
+                <a
+                  href={projectData?.navigation?.repo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`bg-black font-para text-white  flex justify-center items-center gap-2 z-[3] px-4 py-3 font-medium rounded-[10px] opacity-100 hover:opacity-60 transition-all hover:duration-200 ${
+                    !darkMode
+                      ? "  shadow-[rgba(61,61,61,0.72)_0px_0.602187px_1.08394px_-1.25px,rgba(61,61,61,0.64)_0px_2.28853px_4.11936px_-2.5px,rgba(61,61,61,0.25)_0px_10px_18px_-3.75px,rgba(0,0,0,0.35)_0px_0.706592px_0.706592px_-0.583333px,rgba(0,0,0,0.34)_0px_1.80656px_1.80656px_-1.16667px,rgba(0,0,0,0.33)_0px_3.62176px_3.62176px_-1.75px,rgba(0,0,0,0.3)_0px_6.8656px_6.8656px_-2.33333px,rgba(0,0,0,0.26)_0px_13.6468px_13.6468px_-2.91667px,rgba(0,0,0,0.15)_0px_30px_30px_-3.5px]"
+                      : " shadow-[0_0_8px_rgba(0,255,255,0.6)]"
+                  }`}
+                >
+                  <GitHubIcon /> <span>Repo</span>
+                </a>
+              )}
+
+              <p
+                className={`bg-black font-para  text-white  flex justify-center items-center gap-2 z-[3] px-4 py-3 font-medium rounded-[10px] opacity-100 ${
+                  !darkMode
+                    ? "  shadow-[rgba(61,61,61,0.72)_0px_0.602187px_1.08394px_-1.25px,rgba(61,61,61,0.64)_0px_2.28853px_4.11936px_-2.5px,rgba(61,61,61,0.25)_0px_10px_18px_-3.75px,rgba(0,0,0,0.35)_0px_0.706592px_0.706592px_-0.583333px,rgba(0,0,0,0.34)_0px_1.80656px_1.80656px_-1.16667px,rgba(0,0,0,0.33)_0px_3.62176px_3.62176px_-1.75px,rgba(0,0,0,0.3)_0px_6.8656px_6.8656px_-2.33333px,rgba(0,0,0,0.26)_0px_13.6468px_13.6468px_-2.91667px,rgba(0,0,0,0.15)_0px_30px_30px_-3.5px]"
+                    : " shadow-[0_0_8px_rgba(0,255,255,0.6)]"
+                }`}
+              >
+                <CategoryIcon /> <span>{projectData?.category}</span>
+              </p>
+            </div>
+            <div className="flex justify-center items-center py-6">
+              <img
+                src={projectData?.image}
+                className="rounded-xl"
+                alt={projectData?.text}
+                   width="auto"
+                  height="auto"
+                  loading="lazy"
+              />
+            </div>
+            <p className="text-2xl font-para">
+              <BlurText
+                text={projectData?.header?.description}
+                delay={15}
+                animateBy="words"
+                direction="bottom"
+              />
+            </p>
+            <div className="my-4 flex flex-row items-center gap-4">
+              <h3 className="text-3xl ">
+                <LoopIcon fontSize="20px" />
+              </h3>
+              <span className="font-para text-xl capitalize">
+                <BlurText
+                  text={projectData?.tag}
+                  delay={15}
+                  animateBy="words"
+                  direction="bottom"
+                />
+              </span>
+            </div>
+            <div className="my-4 flex flex-row items-center gap-4">
+              <h3 className="text-3xl ">
+                <PersonIcon fontSize="20px" />
+              </h3>
+              <span className="font-para text-xl">
+                <BlurText
+                  text={projectData?.header?.role}
+                  delay={15}
+                  animateBy="words"
+                  direction="bottom"
+                />
+              </span>
+            </div>
+            <div className="my-4 flex flex-row items-center gap-4">
+              <h3 className="text-3xl ">
+                <CalendarMonthIcon fontSize="20px" />
+              </h3>
+              <span className="font-para text-xl">
+                <BlurText
+                  text={projectData?.header?.duration}
+                  delay={15}
+                  animateBy="words"
+                  direction="bottom"
+                />
+              </span>
+            </div>
+            <div className="my-4 flex flex-row items-center gap-4">
+              <h3 className="text-3xl ">
+                <CodeIcon fontSize="20px" />
+              </h3>
+              <span className="font-para text-xl">
+                {projectData?.techUsed?.map((item, index) => (
+                  <span key={index}>{item} , </span>
+                ))}
+              </span>
+            </div>
+            <div className="my-4 py-2">
+              <h3 className="text-2xl">
+                {" "}
+                <SplitText
+                  delay={40}
+                  duration={0.6}
+                  ease="power3.out"
+                  splitType="chars"
+                  from={{ opacity: 0, y: 40 }}
+                  to={{ opacity: 1, y: 0 }}
+                  threshold={0.1}
+                  className="text-left"
+                  text={projectData?.context?.title}
+                />
+              </h3>
+              <ul className="text-xl font-para p-4">
+                {projectData?.context?.goals.map((item, index) => (
+                  <li
+                    key={index + Math.random(4000)}
+                    className="my-3 flex items-center flex-row gap-2"
+                  >
+                    <h4>
+                      <FlagCircleIcon />
+                    </h4>
+                    <BlurText
+                      text={item}
+                      delay={20}
+                      animateBy="words"
+                      direction="bottom"
+                    />
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* SDLC Development Process Grid */}
+            {projectData?.slug && processSteps[projectData.slug] && (
+              <div className="my-12 py-2">
+                <h3 className="text-2xl pb-4">
+                  <SplitText
+                    delay={40}
+                    duration={0.6}
+                    ease="power3.out"
+                    splitType="chars"
+                    from={{ opacity: 0, y: 40 }}
+                    to={{ opacity: 1, y: 0 }}
+                    threshold={0.1}
+                    className="text-left"
+                    text="SDLC Development Process"
+                  />
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mt-6">
+                  {processSteps[projectData.slug].map((step, idx) => (
+                    <div
+                      key={idx}
+                      className={`p-6 rounded-2xl flex flex-col gap-4 border backdrop-blur-sm transition-all duration-300 hover:scale-[1.03] ${
+                        !darkMode
+                          ? "bg-[rgba(245,245,245,0.9)] border-gray-200 shadow-md"
+                          : "bg-[#0b0c10a1] border-cyan-500/20 hover:border-cyan-400 shadow-[0_0_15px_rgba(0,255,255,0.05)] hover:shadow-[0_0_20px_rgba(0,255,255,0.25)]"
+                      }`}
+                    >
+                      <div className="flex justify-between items-center">
+                        <div 
+                          className="w-16 h-16 rounded-full bg-[#00ffff1a] border border-cyan-500/30 flex justify-center items-center overflow-hidden"
+                          style={{ width: "64px", height: "64px", minWidth: "64px", minHeight: "64px" }}
+                        >
+                          <img
+                            src={step.imageUrl}
+                            alt={`${step.title} icon`}
+                            style={{ width: "40px", height: "40px", minWidth: "40px", minHeight: "40px", objectFit: "contain" }}
+                            loading="lazy"
+                          />
+                        </div>
+                        <span className="text-3xl font-extrabold opacity-25 font-mono tracking-tighter stroke-text">
+                          {step.phase}
+                        </span>
+                      </div>
+                      <div>
+                        <h4 className="text-xl font-bold font-heading text-[#f59e0b]">
+                          {step.title}
+                        </h4>
+                        <p className="text-base font-para mt-2 leading-relaxed opacity-80">
+                          {step.desc}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="my-4 py-2">
+              <h3 className="text-2xl">
+                {" "}
+                <SplitText
+                  delay={40}
+                  duration={0.6}
+                  ease="power3.out"
+                  splitType="chars"
+                  from={{ opacity: 0, y: 40 }}
+                  to={{ opacity: 1, y: 0 }}
+                  threshold={0.1}
+                  className="text-left"
+                  text={projectData?.process?.title}
+                />
+              </h3>
+              <ul className="text-xl font-para p-4">
+                {projectData?.process?.challenge.map((item, index) => (
+                  <li
+                    key={index + Math.random(4000)}
+                    className="my-3 flex items-center flex-row gap-2"
+                  >
+                    <h4>
+                      <MemoryIcon />
+                    </h4>
+
+                    <BlurText
+                      text={item}
+                      delay={20}
+                      animateBy="words"
+                      direction="bottom"
+                    />
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="my-4 py-2">
+              <h3 className="text-2xl">
+                {" "}
+                <SplitText
+                  delay={40}
+                  duration={0.6}
+                  ease="power3.out"
+                  splitType="chars"
+                  from={{ opacity: 0, y: 40 }}
+                  to={{ opacity: 1, y: 0 }}
+                  threshold={0.1}
+                  className="text-left"
+                  text={projectData?.myContribution?.title}
+                />
+              </h3>
+              <ul className="text-xl font-para p-4">
+                {projectData?.myContribution?.myrole.map((item, index) => (
+                  <li
+                    key={index + Math.random(4000)}
+                    className="my-3 flex items-center flex-row gap-2"
+                  >
+                    <h4>
+                      <StarIcon />
+                    </h4>
+                    <BlurText
+                      text={item}
+                      delay={20}
+                      animateBy="words"
+                      direction="bottom"
+                    />
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="my-4 py-2">
+              <h3 className="text-2xl">
+                <SplitText
+                  delay={40}
+                  duration={0.6}
+                  ease="power3.out"
+                  splitType="chars"
+                  from={{ opacity: 0, y: 40 }}
+                  to={{ opacity: 1, y: 0 }}
+                  threshold={0.1}
+                  className="text-left"
+                  text={projectData?.outcomes?.title}
+                />
+              </h3>
+              <ul className="text-xl font-para p-4">
+                {projectData?.outcomes?.results.map((item, index) => (
+                  <li
+                    key={index + Math.random(4000)}
+                    className="my-3 flex items-center flex-row gap-2"
+                  >
+                    <h4>
+                      <EmojiEventsIcon />
+                    </h4>
+                    <BlurText
+                      text={item}
+                      delay={20}
+                      animateBy="words"
+                      direction="bottom"
+                    />
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="my-4 py-2 h-auto relative min-h-screen">
+              <h3 className="text-2xl pb-12">
+                <SplitText
+                  delay={40}
+                  duration={0.6}
+                  ease="power3.out"
+                  splitType="chars"
+                  from={{ opacity: 0, y: 40 }}
+                  to={{ opacity: 1, y: 0 }}
+                  threshold={0.1}
+                  className="text-left"
+                  text={projectData?.visualgallery?.title}
+                />
+              </h3>
+              <div className="h-auto overflow-hidden">
+                <Masonry
+                  items={items}
+                  ease="power3.out"
+                  duration={0.6}
+                  stagger={0.05}
+                  animateFrom="bottom"
+                  scaleOnHover={true}
+                  hoverScale={0.95}
+                  blurToFocus={true}
+                  colorShiftOnHover={true}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default CaseStudy;
